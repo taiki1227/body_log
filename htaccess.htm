@@ -1,0 +1,66 @@
+# Body Log clean URL routing
+#
+# 反映直後は302リダイレクトで確認し、
+# 問題がなければ R=302 を R=301 に変更してください。
+
+RewriteEngine On
+
+# PHPファイル名を直接指定された場合だけ、サービス向けURLへ転送します。
+RewriteCond %{THE_REQUEST} \s/+(.*/)?landing\.php(?:[?\s]) [NC]
+RewriteRule ^landing\.php$ ./ [R=302,L]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.php(?:[?\s]) [NC]
+RewriteRule ^index\.php$ records [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?login\.php(?:[?\s]) [NC]
+RewriteRule ^login\.php$ login [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?register\.php(?:[?\s]) [NC]
+RewriteRule ^register\.php$ signup [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?dashboard\.php(?:[?\s]) [NC]
+RewriteRule ^dashboard\.php$ progress [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?account_settings\.php(?:[?\s]) [NC]
+RewriteRule ^account_settings\.php$ settings [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?export_csv\.php(?:[?\s]) [NC]
+RewriteRule ^export_csv\.php$ export [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?logout\.php(?:[?\s]) [NC]
+RewriteRule ^logout\.php$ logout [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?forgot_password\.php(?:[?\s]) [NC]
+RewriteRule ^forgot_password\.php$ forgot-password [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?reset_password\.php(?:[?\s]) [NC]
+RewriteRule ^reset_password\.php$ reset-password [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?privacy\.php(?:[?\s]) [NC]
+RewriteRule ^privacy\.php$ privacy [R=302,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.*/)?terms\.php(?:[?\s]) [NC]
+RewriteRule ^terms\.php$ terms [R=302,L,NE]
+
+# 公開トップページ
+RewriteRule ^$ landing.php [L,QSA]
+
+# 公開ページ
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+RewriteRule ^terms/?$ terms.php [L,QSA]
+
+# ログイン後のアプリ
+RewriteRule ^records/?$ index.php [L,QSA]
+RewriteRule ^login/?$ login.php [L,QSA]
+RewriteRule ^signup/?$ register.php [L,QSA]
+RewriteRule ^progress/?$ dashboard.php [L,QSA]
+RewriteRule ^settings/?$ account_settings.php [L,QSA]
+RewriteRule ^export/?$ export_csv.php [L,QSA]
+RewriteRule ^logout/?$ logout.php [L,QSA]
+RewriteRule ^forgot-password/?$ forgot_password.php [L,QSA]
+RewriteRule ^reset-password/?$ reset_password.php [L,QSA]
+
+# 実在するファイル・ディレクトリはそのまま表示します。
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]

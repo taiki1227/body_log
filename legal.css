@@ -1,0 +1,138 @@
+.legal-main {
+  padding: 72px 0 96px;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(219, 234, 254, 0.75), transparent 24%),
+    var(--background);
+}
+
+.legal-shell {
+  width: min(900px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.legal-hero {
+  margin-bottom: 28px;
+}
+
+.legal-hero h1 {
+  margin: 0;
+  font-size: clamp(34px, 5vw, 50px);
+  line-height: 1.25;
+  letter-spacing: -0.045em;
+}
+
+.legal-hero p:last-child {
+  margin: 14px 0 0;
+  color: var(--muted);
+}
+
+.legal-card {
+  padding: clamp(26px, 5vw, 52px);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(30, 64, 175, 0.08);
+}
+
+.legal-section + .legal-section {
+  margin-top: 38px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+}
+
+.legal-section h2 {
+  margin: 0 0 14px;
+  font-size: 21px;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.legal-section h3 {
+  margin: 24px 0 8px;
+  font-size: 16px;
+}
+
+.legal-section p,
+.legal-section li {
+  color: #526177;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.legal-section p {
+  margin: 10px 0 0;
+}
+
+.legal-section ul,
+.legal-section ol {
+  margin: 12px 0 0;
+  padding-left: 1.5em;
+}
+
+.legal-section a {
+  color: var(--primary);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal-note {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  color: #1e3a8a;
+  background: var(--primary-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.legal-date {
+  margin-top: 36px;
+  color: #8190a5;
+  font-size: 13px;
+  text-align: right;
+}
+
+.legal-back {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.legal-back a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.site-footer a {
+  margin-left: 14px;
+  color: #cbd5e1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .legal-main {
+    padding: 52px 0 72px;
+  }
+
+  .legal-shell {
+    width: min(100% - 28px, 900px);
+  }
+
+  .legal-card {
+    border-radius: 18px;
+  }
+
+  .site-footer a {
+    margin: 6px 12px 0 0;
+  }
+}

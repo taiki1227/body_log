@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# 動作確認中は R=302、問題なければ R=301 に変更してください。
+RewriteRule ^(.*)$ https://tkgstudio.com/body-log/$1 [R=302,L,NE]

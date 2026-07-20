@@ -1,0 +1,772 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #172033;
+  --muted: #697386;
+  --line: #e4e8f0;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --danger: #dc2626;
+  --success-bg: #ecfdf5;
+  --success: #047857;
+  --error-bg: #fef2f2;
+  --error: #b91c1c;
+  --shadow: 0 20px 50px rgba(23, 32, 51, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32rem),
+    var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.app {
+  width: min(960px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.app.narrow {
+  width: min(520px, calc(100% - 32px));
+}
+
+.settings-app {
+  width: min(1080px, calc(100% - 32px));
+}
+
+.dashboard-app {
+  width: min(1120px, calc(100% - 32px));
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.username {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  max-width: 180px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.06);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 10px;
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.15;
+}
+
+.description {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.under-link {
+  margin: 18px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 14px;
+}
+
+.card {
+  margin-bottom: 18px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.form-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-head h2 {
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+  align-items: end;
+}
+
+.log-form {
+  grid-template-columns:
+    minmax(180px, 1.15fr)
+    minmax(120px, 0.75fr)
+    minmax(180px, 1fr)
+    minmax(110px, 0.55fr)
+    auto;
+}
+
+.form.vertical {
+  grid-template-columns: 1fr;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.steps-field {
+  max-width: 140px;
+}
+
+.steps-field input {
+  min-width: 0;
+}
+
+.memo-field {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+label {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+label span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+
+input,
+select {
+  height: 48px;
+  padding: 0 14px;
+}
+
+select {
+  cursor: pointer;
+}
+
+textarea {
+  min-height: 92px;
+  padding: 12px 14px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.primary-button,
+.secondary-button {
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.primary-button {
+  background: var(--primary);
+  color: #fff;
+}
+
+.primary-button:hover {
+  background: var(--primary-dark);
+}
+
+.secondary-button {
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--primary);
+}
+
+.secondary-button:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.alert {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.6;
+}
+
+.alert.success {
+  border: 1px solid rgba(4, 120, 87, 0.22);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.alert.error {
+  border: 1px solid rgba(185, 28, 28, 0.22);
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.profile-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.profile-card summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.profile-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.profile-card summary::after {
+  content: "開く";
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.profile-card[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-card[open] summary::after {
+  content: "閉じる";
+}
+
+.profile-card summary small {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.profile-body {
+  padding: 18px 22px 22px;
+}
+
+.profile-form,
+.settings-form {
+  display: grid;
+  gap: 14px;
+  align-items: end;
+}
+
+.profile-form {
+  grid-template-columns: minmax(160px, 0.85fr) minmax(110px, 0.5fr) minmax(130px, 0.6fr) auto;
+}
+
+.settings-card .section-title {
+  margin-bottom: 18px;
+}
+
+.account-settings-form {
+  grid-template-columns:
+    minmax(160px, 0.9fr)
+    minmax(240px, 1.25fr)
+    minmax(130px, 0.72fr)
+    minmax(100px, 0.55fr)
+    minmax(120px, 0.65fr);
+  align-items: end;
+}
+
+.account-settings-form .form-actions {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+}
+
+.username-field,
+.email-field {
+  min-width: 0;
+}
+
+.profile-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.summary-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.summary-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.summary-card strong {
+  font-size: 24px;
+  overflow-wrap: anywhere;
+}
+
+.summary-card strong.positive {
+  color: #047857;
+}
+
+.summary-card strong.negative {
+  color: #dc2626;
+}
+
+.summary-card strong.neutral {
+  color: var(--text);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.section-title h2 {
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+.text-button {
+  border: none;
+  background: transparent;
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+}
+
+th,
+td {
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+td {
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.memo-cell {
+  max-width: 280px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: normal;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.row-actions form {
+  margin: 0;
+}
+
+.edit-link,
+.delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  min-width: 52px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.edit-link {
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--primary);
+}
+
+.delete-button {
+  border: 1px solid rgba(220, 38, 38, 0.24);
+  background: rgba(220, 38, 38, 0.06);
+  color: var(--danger);
+}
+
+.empty {
+  display: none;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.empty.is-visible {
+  display: block;
+}
+
+.list-meta {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.page-link.is-current {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.page-link.is-disabled {
+  border-color: var(--line);
+  background: #fff;
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.chart-card {
+  overflow: hidden;
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: -4px 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-line {
+  display: inline-block;
+  width: 22px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.legend-line.average-line {
+  background: #f97316;
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 290px;
+  overflow: visible;
+}
+
+.chart-grid {
+  stroke: rgba(105, 115, 134, 0.16);
+  stroke-width: 1;
+}
+
+.chart-axis {
+  stroke: rgba(105, 115, 134, 0.42);
+  stroke-width: 1.2;
+}
+
+.chart-label {
+  fill: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.chart-label-end {
+  text-anchor: end;
+}
+
+.chart-line {
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-line-weight {
+  stroke: var(--primary);
+}
+
+.chart-line-average {
+  stroke: #f97316;
+  stroke-dasharray: 8 7;
+}
+
+.chart-bar {
+  fill: rgba(37, 99, 235, 0.72);
+}
+
+.chart-value-label {
+  fill: #172033;
+  font-size: 12px;
+  font-weight: 850;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.chart-bar-value-label {
+  font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+  .account-settings-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .account-settings-form .form-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .log-form,
+  .profile-form,
+  .settings-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+
+  .account-settings-form .form-actions {
+    justify-content: stretch;
+  }
+}
+
+@media (max-width: 760px) {
+  .app {
+    width: min(100% - 24px, 920px);
+    padding: 24px 0;
+  }
+
+  .settings-app,
+  .dashboard-app {
+    width: min(100% - 24px, 920px);
+  }
+
+  .app-header {
+    display: block;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+    margin-top: 16px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .profile-card {
+    padding: 0;
+  }
+
+  .profile-card summary,
+  .profile-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .form-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .log-form,
+  .profile-form,
+  .settings-form,
+  .account-settings-form,
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .memo-field {
+    grid-column: auto;
+  }
+
+  .steps-field {
+    max-width: none;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-svg {
+    min-height: 240px;
+  }
+}
