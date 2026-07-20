@@ -954,3 +954,76 @@ td {
         min-height: 200px;
       }
     }
+
+/* =========================================================
+   ログイン後3画面のヘッダー幅・折り返しを統一
+   ========================================================= */
+
+/*
+ * 記録・経過グラフ・アカウント設定でコンテンツ幅が異なっていたため、
+ * 同じブラウザ幅でもログアウトだけが次の行へ落ちる状態になっていた。
+ * ログイン後画面はすべて同じ最大幅へ統一する。
+ */
+.app,
+.settings-app,
+.dashboard-app {
+  width: min(1120px, calc(100% - 32px));
+}
+
+/* ログイン・登録などの狭い画面は従来の幅を維持する */
+.app.narrow {
+  width: min(520px, calc(100% - 32px));
+}
+
+.app-header-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/*
+ * デスクトップでは、ユーザー名からログアウトまでを1行で表示する。
+ * タイトル側を縮め、ナビゲーション側は折り返さない。
+ */
+.header-actions {
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.header-actions > * {
+  flex: 0 0 auto;
+}
+
+.header-actions .secondary-link,
+.header-actions .username {
+  white-space: nowrap;
+}
+
+/*
+ * 横幅が足りない端末では、ログアウトだけが単独で落ちるのではなく、
+ * ナビゲーション全体を見出しの下へ移動して統一する。
+ */
+@media (max-width: 960px) {
+  .app-header {
+    display: block;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 760px) {
+  .app,
+  .settings-app,
+  .dashboard-app {
+    width: min(100% - 24px, 1120px);
+  }
+
+  .app.narrow {
+    width: min(100% - 24px, 520px);
+  }
+}
+

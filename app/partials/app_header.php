@@ -24,7 +24,7 @@ $documentTitle = $pageTitle . ' | ' . $appName;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= h($documentTitle) ?></title>
-  <link rel="stylesheet" href="style.css?v=20260721-shared-layout-1">
+  <link rel="stylesheet" href="style.css?v=20260721-shared-layout-2">
 </head>
 <body>
   <main class="app<?= $pageAppClass !== '' ? ' ' . h($pageAppClass) : '' ?>">
