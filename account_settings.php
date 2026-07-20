@@ -95,33 +95,16 @@ $profileSex = (string)$userAccount['sex'];
 $profileAge = $userAccount['age'] !== null ? (string)$userAccount['age'] : '';
 $profileHeightCm = $userAccount['height_cm'] !== null ? number_format((float)$userAccount['height_cm'], 1, '.', '') : '';
 $flash = flash_get();
-?>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>アカウント設定 | <?= h($appName) ?></title>
-  <link rel="stylesheet" href="style.css?v=20260720-account-placeholder-fix-1">
-</head>
-<body>
-  <main class="app settings-app">
-    <header class="app-header">
-      <div>
-        <p class="eyebrow">Account</p>
-        <h1>アカウント設定</h1>
-        <p class="description">ユーザー名、メールアドレス、推定基礎代謝の計算に使う情報を設定します。</p>
-      </div>
-      <div class="header-actions">
-        <span class="username"><?= h($username) ?></span>
-        <a class="secondary-link" href="./">Body Logとは</a>
-        <a class="secondary-link" href="index.php">記録画面へ</a>
-        <a class="secondary-link" href="dashboard.php">グラフ</a>
-        <a class="secondary-link" href="logout.php">ログアウト</a>
-      </div>
-    </header>
+$pageTitle = 'アカウント設定';
+$pageEyebrow = 'Body Log';
+$pageDescription = 'ユーザー名、メールアドレス、推定基礎代謝の計算に使う情報を設定します。';
+$pageActiveNav = 'settings';
+$pageAppClass = 'settings-app';
 
-    <?php if ($flash): ?>
+require __DIR__ . '/app/partials/app_header.php';
+?>
+
+<?php if ($flash): ?>
       <p class="alert success"><?= h($flash) ?></p>
     <?php endif; ?>
 
@@ -172,6 +155,5 @@ $flash = flash_get();
 
       <p class="profile-note">ユーザー名は画面右上の表示とログイン時のユーザー名に使います。メールアドレスはパスワード再設定メールの送信に使います。性別・年齢・身長は、記録画面の「推定基礎代謝」の計算に使います。</p>
     </section>
-  </main>
-</body>
-</html>
+
+<?php require __DIR__ . '/app/partials/app_footer.php'; ?>

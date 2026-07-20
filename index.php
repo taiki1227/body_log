@@ -525,161 +525,16 @@ $formCalories = ($editLog && $editLog['calories'] !== null) ? (string)(int)$edit
 $formSteps = ($editLog && $editLog['steps'] !== null) ? (string)(int)$editLog['steps'] : '';
 $formMemo = $editLog ? (string)($editLog['memo'] ?? '') : '';
 
+$pageTitle = '記録';
+$pageEyebrow = 'Body Log';
+$pageDescription = '日付・体重・カロリー・歩数・メモをシンプルに記録します。';
+$pageActiveNav = 'records';
+$pageAppClass = '';
+
+require __DIR__ . '/app/partials/app_header.php';
 ?>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= h($appName) ?></title>
-  <link rel="stylesheet" href="style.css?v=20260718-all-metric-explanations-1">
-  <style>
-    .summary-grid-main {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      grid-auto-rows: 1fr;
-    }
 
-    .summary-grid-main .summary-card {
-      display: flex;
-      flex-direction: column;
-      min-height: 220px;
-      padding: 22px 20px;
-    }
-
-    .summary-card-tdee {
-      border-color: rgba(37, 99, 235, 0.28);
-      background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), #ffffff 62%);
-    }
-
-    .summary-card-tdee > strong {
-      display: block;
-      font-size: 30px;
-      line-height: 1.2;
-    }
-
-    .metric-card-meta {
-      display: grid;
-      gap: 4px;
-      margin-top: 12px;
-    }
-
-    .metric-card-meta small {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 750;
-      line-height: 1.5;
-    }
-
-    .metric-explanation {
-      width: 100%;
-      margin-top: auto;
-      padding-top: 14px;
-      border-top: 1px solid rgba(37, 99, 235, 0.14);
-    }
-
-    .metric-explanation summary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--primary);
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      list-style: none;
-    }
-
-    .metric-explanation summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .metric-explanation summary::after {
-      content: "＋";
-      font-size: 15px;
-      line-height: 1;
-    }
-
-    .metric-explanation[open] summary::after {
-      content: "−";
-    }
-
-    .metric-explanation-body {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 650;
-      line-height: 1.7;
-    }
-
-    .metric-explanation-body p {
-      margin: 0;
-    }
-
-    .metric-formula {
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(37, 99, 235, 0.07);
-      color: var(--text);
-      font-weight: 800;
-    }
-
-    .metric-breakdown {
-      display: grid;
-      gap: 5px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .metric-breakdown li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .metric-breakdown strong {
-      flex: 0 0 auto;
-      font-size: 12px;
-      line-height: inherit;
-    }
-
-    @media (max-width: 900px) {
-      .summary-grid-main {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 760px) {
-      .summary-grid-main {
-        grid-template-columns: 1fr;
-      }
-
-      .summary-grid-main .summary-card {
-        min-height: 200px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <main class="app">
-    <header class="app-header">
-      <div>
-        <p class="eyebrow">Daily Log</p>
-        <h1><?= h($appName) ?></h1>
-        <p class="description">日付・体重・カロリー・歩数・メモをシンプルに記録します。</p>
-      </div>
-      <div class="header-actions">
-        <span class="username"><?= h((string)$username) ?></span>
-        <a class="secondary-link" href="./">Body Logとは</a>
-        <a class="secondary-link" href="account_settings.php">アカウント設定</a>
-        <a class="secondary-link" href="dashboard.php">グラフ</a>
-        <a class="secondary-link" href="export_csv.php">CSV出力</a>
-        <a class="secondary-link" href="logout.php">ログアウト</a>
-      </div>
-    </header>
-
-    <?php if ($flash): ?>
+<?php if ($flash): ?>
       <p class="alert success"><?= h($flash) ?></p>
     <?php endif; ?>
 
@@ -943,6 +798,5 @@ $formMemo = $editLog ? (string)($editLog['memo'] ?? '') : '';
         <?php endif; ?>
       <?php endif; ?>
     </section>
-  </main>
-</body>
-</html>
+
+<?php require __DIR__ . '/app/partials/app_footer.php'; ?>

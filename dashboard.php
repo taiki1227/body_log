@@ -323,33 +323,16 @@ $recentStepsAverage = average_numeric(array_slice($stepValues, -7));
 $latestLogDate = $chartLogs ? str_replace('-', '/', (string)$chartLogs[count($chartLogs) - 1]['log_date']) : '-';
 $flash = flash_get();
 
-?>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>グラフ | <?= h($appName) ?></title>
-  <link rel="stylesheet" href="style.css?v=20260716-chart-label-fix-1">
-</head>
-<body>
-  <main class="app dashboard-app">
-    <header class="app-header">
-      <div>
-        <p class="eyebrow">Dashboard</p>
-        <h1>グラフ</h1>
-        <p class="description">体重・摂取カロリー・歩数の推移を見える化します。</p>
-      </div>
-      <div class="header-actions">
-        <span class="username"><?= h((string)$username) ?></span>
-        <a class="secondary-link" href="index.php">記録画面へ</a>
-        <a class="secondary-link" href="account_settings.php">アカウント設定</a>
-        <a class="secondary-link" href="export_csv.php">CSV出力</a>
-        <a class="secondary-link" href="logout.php">ログアウト</a>
-      </div>
-    </header>
+$pageTitle = '経過グラフ';
+$pageEyebrow = 'Body Log';
+$pageDescription = '体重・摂取カロリー・歩数の推移を見える化します。';
+$pageActiveNav = 'progress';
+$pageAppClass = 'dashboard-app';
 
-    <?php if ($flash): ?>
+require __DIR__ . '/app/partials/app_header.php';
+?>
+
+<?php if ($flash): ?>
       <p class="alert success"><?= h($flash) ?></p>
     <?php endif; ?>
 
@@ -418,6 +401,5 @@ $flash = flash_get();
         <?= render_bar_chart('歩数推移', $labels, $stepValues, '歩') ?>
       </section>
     <?php endif; ?>
-  </main>
-</body>
-</html>
+
+<?php require __DIR__ . '/app/partials/app_footer.php'; ?>
