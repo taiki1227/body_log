@@ -8,7 +8,7 @@
 
 - トップページ: `https://tkgstudio.com/body-log/`
 - 記録画面: `https://tkgstudio.com/body-log/records`
-- 推移グラフ: `https://tkgstudio.com/body-log/progress`
+- 進捗画面: `https://tkgstudio.com/body-log/progress`
 
 ## 主な機能
 
@@ -20,6 +20,11 @@
 - 推定基礎代謝の計算
 - 体重と摂取カロリーの実績から推定TDEEを算出
 - 体重・カロリー・歩数のグラフ表示
+- 目標体重・目標日の設定
+- 目標までの残り体重と残り日数
+- 必要ペースと実績ペースの比較
+- 予想到達日の表示
+- 体重グラフへの目標体重表示
 - CSVエクスポート
 - アカウント情報と身体情報の変更
 - メールによるパスワード再設定
@@ -44,6 +49,7 @@
 body-log/
 ├─ app/
 │  ├─ bootstrap.php
+│  ├─ metrics.php
 │  ├─ error.php
 │  ├─ password_reset.php
 │  └─ .htaccess
@@ -160,7 +166,7 @@ return [
 |---|---|
 | トップ | `/body-log/` |
 | 記録 | `/body-log/records` |
-| 推移グラフ | `/body-log/progress` |
+| 進捗 | `/body-log/progress` |
 | アカウント設定 | `/body-log/settings` |
 | ログイン | `/body-log/login` |
 | ユーザー登録 | `/body-log/signup` |
@@ -175,7 +181,7 @@ return [
 
 ## データベース
 
-主に次の2テーブルを使用します。
+主に次の3テーブルを使用します。
 
 ### `users`
 
@@ -192,6 +198,10 @@ return [
 - メモ
 
 同じユーザーが同じ日付の記録を複数作らないよう、ユーザーIDと日付にユニーク制約を設定しています。
+
+### `goals`
+
+ユーザーごとの開始時体重・開始日、目標体重・目標日、進行状態を保存します。進行中の目標を終了・更新しても、過去の目標データは履歴として保持します。
 
 ## セキュリティ
 

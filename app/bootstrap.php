@@ -117,6 +117,25 @@ function ensure_schema(): void
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ");
 
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS goals (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            start_date DATE NOT NULL,
+            start_weight_kg DECIMAL(5,1) NOT NULL,
+            target_weight_kg DECIMAL(5,1) NOT NULL,
+            target_date DATE NOT NULL,
+            status VARCHAR(20) NOT NULL DEFAULT 'active',
+            completed_at DATETIME NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_goals_user_status (user_id, status),
+            CONSTRAINT fk_goals_user
+                FOREIGN KEY (user_id) REFERENCES users(id)
+                ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+
     ensure_users_schema($pdo);
     ensure_logs_schema($pdo);
 

@@ -771,6 +771,132 @@ td {
   }
 }
 
+/* 目標進捗 */
+.compact-goal-card,
+.goal-overview .section-title,
+.goal-achieved {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.compact-goal-card h2,
+.compact-goal-card p,
+.goal-achieved p {
+  margin: 4px 0 0;
+}
+
+.goal-kicker {
+  color: var(--primary, #2563eb);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.goal-status,
+.goal-projection {
+  color: var(--primary, #2563eb);
+  font-weight: 800;
+}
+
+.goal-percent {
+  color: var(--primary, #2563eb);
+  font-size: clamp(28px, 5vw, 46px);
+}
+
+.goal-progress {
+  height: 14px;
+  margin: 22px 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.goal-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary, #2563eb);
+}
+
+.goal-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.goal-stats div {
+  padding: 14px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 14px;
+}
+
+.goal-stats dt {
+  color: var(--muted, #64748b);
+  font-size: 12px;
+}
+
+.goal-stats dd {
+  margin: 5px 0 0;
+  font-weight: 800;
+}
+
+.goal-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: 14px;
+}
+
+.goal-form label {
+  display: grid;
+  gap: 7px;
+  font-weight: 700;
+}
+
+.goal-cancel-form,
+.goal-achieved {
+  margin-top: 18px;
+}
+
+.danger-button {
+  padding: 10px 16px;
+  border: 1px solid rgba(220, 38, 38, .35);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--danger);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.chart-line-target {
+  stroke: #ef4444;
+  stroke-width: 3;
+  stroke-dasharray: 10 7;
+}
+
+.legend-line.target-line {
+  border-top-color: #ef4444;
+  border-top-style: dashed;
+}
+
+@media (max-width: 760px) {
+  .compact-goal-card,
+  .goal-overview .section-title,
+  .goal-achieved {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .goal-stats,
+  .goal-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ログイン後画面の共通ヘッダー・フッター */
 .secondary-link.is-active {
   border-color: var(--primary);
