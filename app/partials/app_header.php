@@ -24,7 +24,7 @@ $documentTitle = $pageTitle . ' | ' . $appName;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= h($documentTitle) ?></title>
-  <link rel="stylesheet" href="style.css?v=20260722-goal-progress">
+  <link rel="stylesheet" href="style.css?v=20260721-shared-layout-2">
 </head>
 <body>
   <main class="app<?= $pageAppClass !== '' ? ' ' . h($pageAppClass) : '' ?>">
@@ -54,7 +54,7 @@ $documentTitle = $pageTitle . ' | ' . $appName;
           class="secondary-link<?= $pageActiveNav === 'progress' ? ' is-active' : '' ?>"
           href="progress"
           <?= $pageActiveNav === 'progress' ? 'aria-current="page"' : '' ?>
-        >進捗</a>
+        >経過グラフ</a>
 
         <a
           class="secondary-link<?= $pageActiveNav === 'settings' ? ' is-active' : '' ?>"

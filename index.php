@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 require __DIR__ . '/app/bootstrap.php';
 require __DIR__ . '/app/error.php';
-require __DIR__ . '/app/metrics.php';
 
 $userId = require_login();
 $config = app_config();
@@ -501,9 +500,6 @@ $activityDiffValue = ($estimatedTdee !== null && $estimatedBmr !== null)
     ? format_kcal_summary($estimatedTdee - $estimatedBmr)
     : '-';
 
-$goal = get_active_goal($userId);
-$goalMetrics = $goal ? get_goal_metrics($userId, $goal) : null;
-
 $today = (new DateTimeImmutable('now', new DateTimeZone('Asia/Tokyo')))->format('Y-m-d');
 $flash = flash_get();
 $username = $_SESSION['username'] ?? '';
@@ -587,20 +583,6 @@ require __DIR__ . '/app/partials/app_header.php';
           <textarea id="memo" name="memo" rows="3" maxlength="1000" placeholder="例：外食、むくみ、体調など"><?= h($formMemo) ?></textarea>
         </div>
       </form>
-    </section>
-
-    <section class="card compact-goal-card">
-      <?php if ($goal && $goalMetrics): ?>
-        <div>
-          <span class="goal-kicker">目標 <?= h(number_format((float)$goal['target_weight_kg'], 1)) ?>kg</span>
-          <h2>あと<?= h(number_format((float)$goalMetrics['remaining_weight'], 1)) ?>kg・期限まで<?= h((string)max(0, (int)$goalMetrics['remaining_days'])) ?>日</h2>
-          <p><?= h((string)$goalMetrics['status']) ?></p>
-        </div>
-        <a class="secondary-link" href="progress">進捗を見る →</a>
-      <?php else: ?>
-        <div><h2>目標を設定</h2><p>目標体重と目標日を設定できます。</p></div>
-        <a class="secondary-link" href="progress">目標を設定する →</a>
-      <?php endif; ?>
     </section>
 
     <section class="summary-grid summary-grid-main" aria-label="サマリー">

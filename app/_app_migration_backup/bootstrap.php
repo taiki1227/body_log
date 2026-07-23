@@ -3,41 +3,15 @@ declare(strict_types=1);
 
 function app_config(): array
 {
-    static $config = null;
+    $configPath = __DIR__ . '/config.php';
 
-    if (is_array($config)) {
-        return $config;
-    }
-
-    $configPath = dirname(__DIR__, 3)
-        . '/private/body-log/config.php';
-
-    if (!is_file($configPath) || !is_readable($configPath)) {
-        error_log(
-            '[Body Log] config.phpを読み込めません: '
-            . $configPath
-        );
-
+    if (!file_exists($configPath)) {
         http_response_code(500);
-        echo '設定ファイルを読み込めません。';
+        echo 'config.php がありません。config.sample.php をコピーして config.php を作成してください。';
         exit;
     }
 
-    $loadedConfig = require $configPath;
-
-    if (!is_array($loadedConfig)) {
-        error_log(
-            '[Body Log] config.phpが配列を返していません。'
-        );
-
-        http_response_code(500);
-        echo '設定ファイルが正しくありません。';
-        exit;
-    }
-
-    $config = $loadedConfig;
-
-    return $config;
+    return require $configPath;
 }
 
 function h(?string $value): string
