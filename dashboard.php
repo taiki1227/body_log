@@ -2,11 +2,50 @@
 declare(strict_types=1);
 
 require __DIR__ . '/app/bootstrap.php';
+require __DIR__ . '/app/metrics.php';
 
 $userId = require_login();
 $config = app_config();
 $appName = $config['app_name'] ?? '体重・カロリー記録';
 $username = $_SESSION['username'] ?? '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+    $action = (string)($_POST['action'] ?? '');
+    try {
+        if ($action === 'cancel_goal') {
+            cancel_active_goal($userId);
+            flash_set('目標を終了しました。');
+        } elseif ($action === 'complete_goal') {
+            complete_active_goal($userId);
+            flash_set('目標を達成済みにしました。');
+        } elseif ($action === 'create_goal' || $action === 'update_goal') {
+            $weightRaw = trim((string)($_POST['target_weight_kg'] ?? ''));
+            $dateRaw = trim((string)($_POST['target_date'] ?? ''));
+            $errors = validate_goal_input($weightRaw, $dateRaw, get_recent_average_weight($userId));
+            if ($errors) {
+                flash_set(implode(' ', $errors));
+            } elseif ($action === 'create_goal') {
+                create_goal($userId, (float)$weightRaw, $dateRaw);
+                flash_set('目標を設定しました。');
+            } else {
+                update_active_goal($userId, (float)$weightRaw, $dateRaw);
+                flash_set('目標を更新しました。');
+            }
+        }
+    } catch (Throwable $e) {
+        error_log('[Body Log] goal update failed: ' . $e->getMessage());
+        flash_set($e instanceof InvalidArgumentException ? $e->getMessage() : '目標を保存できませんでした。');
+    }
+    redirect('progress');
+}
+
+function signed_pace(?float $value): string
+{
+    if ($value === null) return 'データ収集中';
+    if (abs($value) < 0.005) return '±0.00 kg／週';
+    return ($value > 0 ? '+' : '−') . number_format(abs($value), 2) . ' kg／週';
+}
 
 function format_chart_number(?float $value, string $suffix, int $decimals = 0): string
 {
@@ -321,11 +360,14 @@ $recentWeightAverage = average_numeric(array_slice($weightValues, -7));
 $recentCaloriesAverage = average_numeric(array_slice($calorieValues, -7));
 $recentStepsAverage = average_numeric(array_slice($stepValues, -7));
 $latestLogDate = $chartLogs ? str_replace('-', '/', (string)$chartLogs[count($chartLogs) - 1]['log_date']) : '-';
+$goal = get_active_goal($userId);
+$goalMetrics = $goal ? get_goal_metrics($userId, $goal) : null;
+$targetWeightValues = $goal ? array_fill(0, count($labels), (float)$goal['target_weight_kg']) : [];
 $flash = flash_get();
 
-$pageTitle = '経過グラフ';
+$pageTitle = '進捗';
 $pageEyebrow = 'Body Log';
-$pageDescription = '体重・摂取カロリー・歩数の推移を見える化します。';
+$pageDescription = '目標に対する進み具合と、体重・カロリー・歩数の推移を確認します。';
 $pageActiveNav = 'progress';
 $pageAppClass = 'dashboard-app';
 
@@ -335,6 +377,56 @@ require __DIR__ . '/app/partials/app_header.php';
 <?php if ($flash): ?>
       <p class="alert success"><?= h($flash) ?></p>
     <?php endif; ?>
+
+    <?php if ($goal && $goalMetrics): ?>
+      <section class="card goal-overview">
+        <div class="section-title">
+          <div>
+            <span class="goal-kicker">目標進捗</span>
+            <h2>目標 <?= h(number_format((float)$goal['target_weight_kg'], 1)) ?>kgまであと<?= h(number_format((float)$goalMetrics['remaining_weight'], 1)) ?>kg</h2>
+            <p class="goal-status"><?= h($goalMetrics['status']) ?></p>
+          </div>
+          <strong class="goal-percent"><?= h(number_format((float)$goalMetrics['progress'], 0)) ?>%</strong>
+        </div>
+        <div class="goal-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?= h(number_format((float)$goalMetrics['progress'], 0)) ?>">
+          <span style="width: <?= h(number_format((float)$goalMetrics['progress'], 2, '.', '')) ?>%"></span>
+        </div>
+        <dl class="goal-stats">
+          <div><dt>開始時体重</dt><dd><?= h(number_format((float)$goal['start_weight_kg'], 1)) ?> kg</dd></div>
+          <div><dt>現在の平均体重</dt><dd><?= h(number_format((float)$goalMetrics['current_weight'], 1)) ?> kg</dd></div>
+          <div><dt>目標体重</dt><dd><?= h(number_format((float)$goal['target_weight_kg'], 1)) ?> kg</dd></div>
+          <div><dt>残り体重</dt><dd><?= h(number_format((float)$goalMetrics['remaining_weight'], 1)) ?> kg</dd></div>
+          <div><dt>目標日</dt><dd><?= h((string)$goal['target_date']) ?></dd></div>
+          <div><dt>残り日数</dt><dd><?= h((string)max(0, (int)$goalMetrics['remaining_days'])) ?> 日</dd></div>
+          <div><dt>必要ペース</dt><dd><?= h(signed_pace((float)$goalMetrics['required_pace'])) ?></dd></div>
+          <div><dt>現在ペース</dt><dd><?= h(signed_pace($goalMetrics['actual_pace'])) ?></dd></div>
+        </dl>
+        <?php if ($goalMetrics['projected_date']): ?>
+          <p class="goal-projection">このペースなら<?= h((string)$goalMetrics['projected_date']) ?>ごろ達成予定</p>
+        <?php endif; ?>
+        <?php if ($goalMetrics['reached']): ?>
+          <div class="goal-achieved">
+            <p><strong>目標体重に到達しました。</strong> この目標を達成済みにしますか？</p>
+            <form method="post"><input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>"><input type="hidden" name="action" value="complete_goal"><button class="primary-button" type="submit">達成済みにする</button></form>
+          </div>
+        <?php endif; ?>
+      </section>
+    <?php endif; ?>
+
+    <section class="card goal-form-card">
+      <div class="section-title"><div><h2><?= $goal ? '目標を編集' : '目標を設定' ?></h2><p class="list-meta">目標体重と目標日を入力してください。開始時の平均体重と日付は自動保存されます。</p></div></div>
+      <form method="post" class="form goal-form">
+        <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
+        <input type="hidden" name="action" value="<?= $goal ? 'update_goal' : 'create_goal' ?>">
+        <label>目標体重<input type="number" name="target_weight_kg" min="30" max="300" step="0.1" value="<?= h($goal ? number_format((float)$goal['target_weight_kg'], 1, '.', '') : '') ?>" placeholder="68.0" <?= $recentWeightAverage === null ? 'disabled' : '' ?> required></label>
+        <label>目標日<input type="date" name="target_date" min="<?= h(goal_today()->modify('+1 day')->format('Y-m-d')) ?>" value="<?= h($goal['target_date'] ?? '') ?>" <?= $recentWeightAverage === null ? 'disabled' : '' ?> required></label>
+        <button class="primary-button" type="submit" <?= $recentWeightAverage === null ? 'disabled' : '' ?>><?= $goal ? '目標を更新する' : '目標を設定する' ?></button>
+      </form>
+      <?php if ($recentWeightAverage === null): ?><p class="alert">目標を設定する前に、体重を1件以上記録してください。</p><?php endif; ?>
+      <?php if ($goal): ?>
+        <form method="post" class="goal-cancel-form" onsubmit="return confirm('現在の目標を終了しますか？');"><input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>"><input type="hidden" name="action" value="cancel_goal"><button class="danger-button" type="submit">目標を終了する</button></form>
+      <?php endif; ?>
+    </section>
 
     <?php if (!$chartLogs): ?>
       <section class="card">
@@ -374,10 +466,12 @@ require __DIR__ . '/app/partials/app_header.php';
         <div class="chart-legend">
           <span><i class="legend-line weight-line"></i>体重</span>
           <span><i class="legend-line average-line"></i>7日平均</span>
+          <?php if ($goal): ?><span><i class="legend-line target-line"></i>目標体重</span><?php endif; ?>
         </div>
         <?= render_line_chart('体重推移', $labels, [
             ['label' => '体重', 'class' => 'chart-line-weight', 'values' => $weightValues, 'show_labels' => true],
             ['label' => '7日平均', 'class' => 'chart-line-average', 'values' => $weightAverageValues, 'show_labels' => false],
+            ...($goal ? [['label' => '目標体重', 'class' => 'chart-line-target', 'values' => $targetWeightValues, 'show_labels' => false]] : []),
         ], 'kg', 1) ?>
       </section>
 
